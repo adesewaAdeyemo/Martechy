@@ -70,10 +70,10 @@ ul li, a{
     color: #3a3431 !important;
 }
 .custom-btn-outline{
-    border-color:#DC4D01 !important;
+    border-color: #582a11 !important;
   }
 .custom-btn-outline:hover {
-    border-color:#582a11 !important;
+    border-color:#DC4D01 !important;
   }
 a:hover, .item:hover{
     color:#DC4D01 !important;
