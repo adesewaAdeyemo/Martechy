@@ -2,7 +2,7 @@
     <div class="wrapper">
         <nav class="d-flex justify-content-between align-items-center py-2 header-nav" id="header-nav">
             <ul style="margin-bottom:0px" class="d-flex justify-content-between p-0 align-items-center">
-                <li class="item button allitemmargin"><img src="https://res.cloudinary.com/dorjfo4ca/image/upload//c_thumb,w_200,h_30,g_auto/v1692783066/Henry/LogoSample_ByTailorBrands_2_qmbe1i.png" ></li>
+                <li class="item button allitemmargin"><a class="Logo" href="/"><img src="https://res.cloudinary.com/dorjfo4ca/image/upload//c_thumb,w_200,h_30,g_auto/v1692783066/Henry/LogoSample_ByTailorBrands_2_qmbe1i.png"></a></li>
                 <!-- <li class="item button allitemmargin"><a class="Logo " href="/">Martechy</a></li> -->
                 <li class="item allitemmargin px-3"><a href="/realtor#about">About Us</a></li>
                 <li class="item button allitemmargin px-3"><a href="/realtor#contact">Art</a></li>
