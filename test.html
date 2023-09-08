@@ -1,321 +1,60 @@
-<template>
-  <div class="container-fluid">
-    <br />
-    <br />
-    <!-- <form> -->
-      <div class="row">
-        <div class="col-3 col-lg-12 col-xl-9">
-          <nuxt-link class="nav-link" :to="`/manage-roles`">
-            <i class="fe fe-arrow-left"></i> Back
-          </nuxt-link>
-        </div>
-        <div class="col-3 col-lg-12 col-xl-3">
-          <button
-            v-on:click="send"
-            :disabled="btn_loading"
-            class="btn btn-lg btn-block btn-primary mb-3"
-            type="button"
-          >
-            <span v-if="btn_loading"
-              ><i class="fa fa-spin fa-spinner"></i> Requesting...</span
-            >
-            <span v-else>Update</span>
-          </button>
-        </div>
+<div class="container margin-fot-top-bottom">
+  <div class="row">
+    <div class="col-lg-4 og-after-laer-row-col">
+      <div class="pricing-border">
+        <div><img class="pricing-in-text-image" src="assets/img/Rectangle 33.png" alt="" /> <img class="pricing-in-text-image pricing-in-text-image-inside" src="assets/img/For Customers.png" alt="" /></div>
+        <div class="">₦100</div>
+        <div class="pricing-convience-fee">convience-fee</div>
       </div>
-      <div class="row">
-        <div class="col-4 col-lg-12 col-xl-4">
-          <div class="form-group">
-            <label>Role</label>
-
-            <vue-search-select
-              :options="roles"
-              placeholder="select role"
-              required
-              v-model="role"
-              @input="onClickSetPermission"
-            >
-            </vue-search-select>
-          </div>
-        </div>
-
-        <div class="col-4 col-lg-12 col-xl-6">
-          <div class="form-group">
-            <label>Description</label>
-            <span id="sms_count">100 characters</span>
-            <textarea
-              rows="2"
-              cols="50"
-              v-model="description"
-              class="form-control"
-              required
-              id="sms"
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="col-4 col-lg-12 col-xl-6">
-          <div class="form-group country">
-            <label>Permission</label>
-            <section>
-              <vue-multi-select
-                v-model="access"
-                :options="access_options"
-                :selected-options="items"
-                placeholder="select item"
-                @select="onSelect"
-              >
-              </vue-multi-select>
-            </section>
-          </div>
-        </div>
-
-        <div class="col-4 col-lg-12 col-xl-6">
-          <div class="form-group country">
-            <label>No Permission</label>
-            <vue-multi-select
-              v-model="no_access"
-              :options="non_accessibile_options"
-              :selected-options="non_items"
-              placeholder="select item"
-              @select="onSelectNoPermission"
-            >
-            </vue-multi-select>
-          </div>
-        </div>
+    </div>
+    <div class="col-lg-4 pricing-border-text-image-all">
+      <div class="pricing-border">
+        <div><img class="pricing-in-text-image" src="assets/img/Rectangle 33.png" alt="" /> <img class="pricing-in-text-image pricing-in-text-image-inside" src="assets/img/For Merchants.png" alt="" /></div>
+        <div class="">3%</div>
+        <div class="pricing-per-transaction">- per transaction</div>
+        <div class="pricing-per-transaction">- Cashback</div>
+        <div class="pricing-getstarted">Get Started</div>
       </div>
-    <!-- </form> -->
-    <br />
-    <br />
-    <br />
+    </div>
+    <div class="col-lg-4 pricing-border-top">
+      <div class="pricing-border">
+        <div><img class="pricing-in-text-image" src="assets/img/Rectangle 33.png" alt="" /> <img class="pricing-in-text-image pricing-in-text-image-inside" style="margin-top: -131px; margin-right: 25px;" src="assets/img/Customized.png" alt="" /></div>
+        <div class="pricing-customized">Design a package for your business. Available for business with daily large volume.</div>
+        <div class="pricing-getstarted1">Contact Us</div>
+      </div>
+    </div>
   </div>
-</template>
-
-<script>
-import { mapMutations } from "vuex";
-import { _error, _merchants } from "~/plugins/helpers";
-import { _accessListAdmin, _canNotAccessListAdmin } from "~/plugins/menu";
-
-export default {
-  head: { title: "Update Merchant Roles & Permissions" },
-  middleware: "admin",
-  layout: "default",
-
-  data() {
-    return {
-      loading: true,
-      btn_loading: false,
-      role: "",
-      access: [],
-      no_access: [],
-      access_options: [],
-      items: [],
-      non_items: [],
-      lastSelectItem: {},
-      lastSelectItemNoPermission: {},
-      non_accessibile_options: [],
-      description: "",
-      permission: {},
-      roles: [],
-      all_permissions: [],
-      all_accessibile_options: [],
-      all_non_accessibile_options: [],
-
-      page: "edit-role",
-    };
-  },
-
-  async mounted() {
-    try {
-      this.getRoles();
-      this.getAccessList();
-      this.updateApp({ active: "add-role", title: "Add Role" });
-
-      this.loading = false;
-    } catch (ex) {
-      this.$swal(_error(ex, true));
-      this.loading = false;
-    }
-  },
-
-  methods: {
-    ...mapMutations({ updateApp: "app/updateApp" }),
-
-    getAccessList() {
-        let data,
-        data_cannot = {}
-     _accessListAdmin().forEach(element => {
-     data = {
-          text: "Can " + element.text,
-          value: element.id,
-          route: element.route,
-          action: element.action,
-        };
-        data_cannot = {
-          text: "Cannot " + element.text,
-          value: element.id,
-          route: element.route,
-          action: element.action,
-        };
-        this.access_options.push(data);
-        this.all_accessibile_options.push(data);
-        this.all_non_accessibile_options.push(data_cannot);
-        this.non_accessibile_options.push(data_cannot);
-      });
-    },
-
-    async send() {
-      try {
-        let access_list = [];
-        let no_access_list = [];
-
-        if (this.items.length > 0) {
-          this.items.forEach((element, i) => {
-            access_list.push({ id: element.value, text: element.text, route:element.route, action:element.action});
-          });
-        }
-
-        if (this.non_items.length > 0) {
-          this.non_items.forEach((element) => {
-            no_access_list.push({ id: element.value, text: element.text, route:element.route, action:element.action});
-
-          });
-        }
-
-        let role_name = this.roles.filter((e) => e.value === this.role)[0].text;
-        let response = await this.$axios.$post(`/roles/update/${this.role}`, {
-          role: role_name,
-          permission: access_list,
-          no_permission: no_access_list,
-          role_type: "admin",
-          permission_type:"admin",
-          description: this.description,
-        });
-
-        if (response.status == "Failed") {
-          return this.$swal(_error({ message: response.message }, true));
-        }
-
-        if (response.status == "Successful") {
-          this.$swal("", response.message, "success");
-          return this.$router.push("/manage-roles");
-        }
-      } catch (ex) {
-        this.$swal(_error(ex, true));
-        this.btn_loading = false;
-      }
-    },
-
-
-    async getRoles() {
-      try {
-        this.loading = true;
-        this.url = `/roles`;
-        let response = await this.$axios.$get(this.url);
-        if (response?.data) {
-          if (response?.data.roles.length > 0) {
-            response.data.roles.forEach((element) => {
-              let data = {
-                text: element.name,
-                value: element.id,
-              };
-              this.roles.push(data);
-            });
-            this.loading = false;
-            this.all_permissions = response?.data?.permissions;
-          }
-        }
-      } catch (ex) {
-        this.$swal(_error(ex, true));
-      }
-    },
-
-    onClickSetPermission(params) {
-    
-     this.items = [];
-      let item_values=[];
-      let non_item_values=[];
-      this.non_items =[]
-      this.permission = this.all_permissions.filter(
-        (item) => item.role_id === params
-      )[0];
-      let data = {},
-        no_permission_data = {};
-      this.description = this.permission.description;
-      this.permission?.admin_permission?.forEach((element) => {
-        data = {
-          text: element.text,
-          value: element.id,
-          route:element.route,
-          action: element.action
-        };
-        this.items.push(data);
-        item_values.push(element.id)
-      });
-
-      this.non_accessibile_options = this.non_accessibile_options.filter(e=>!item_values.includes(e.value) )
-
-      this.permission?.admin_no_permission?.forEach((element) => {
-        no_permission_data = {
-          text: element.text,
-          value: element.id,
-          route:element.route,
-          action: element.action
-        };
-        this.non_items.push(no_permission_data);
-        non_item_values.push(element.id)
-      });
-      this.access_options = this.access_options.filter(e=>!non_item_values.includes(e.value) )
-
-    },
-
-
-      onSelect(items, lastSelectItem) {
-      let item_values = [];
-
-      items.forEach((element) => {
-        item_values.push(element.value);
-      });
-
-      this.items = items;
-      this.lastSelectItem = lastSelectItem;
-
-      this.non_accessibile_options = this.all_non_accessibile_options;
-      this.non_accessibile_options = this.non_accessibile_options.filter(
-        (e) => !item_values.includes(e.value)
-      );
-      this.non_items = this.non_items.filter(
-        (elem) => !items.find(({ value }) => elem.value === value)
-      );
-    },
-
-    onSelectNoPermission(non_items, lastSelectItemNoPermission) {
-      let item_values = [];
-
-      non_items.forEach((element) => {
-        item_values.push(element.value);
-      });
-
-      this.non_items = non_items;
-      this.lastSelectItemNoPermission = lastSelectItemNoPermission;
-
-      this.access_options = this.all_accessibile_options;
-      this.access_options = this.access_options.filter(
-        (e) => !item_values.includes(e.value)
-      );
-      this.items = this.items.filter(
-        (elem) => !non_items.find(({ value }) => elem.value === value)
-      );
-    },
-  
-  },
- 
-};
-</script>
-<style>
-section .ui.selection.dropdown {
-  max-height: 500px !important;
-  overflow-y: auto !important;
-  box-shadow: 0 2px 3px 0 rgba(34,36,38,.15);
-}
-</style>
+  <br><br><br><br><br><br>
+  <div class="row row-side-pricing">
+    <div class="col-lg-2"> </div>
+    <div class="col-lg-8 all-service-int">
+      <div class="row">
+        <div class="col-lg-1"> </div>
+        <div class="col-lg-10">
+          <div class="customer-pay-text">If Customer Pays</div>
+          <div class="customer-pay-text-naria">NGN 2000</div>
+          <div class="you-will-get-pu"><span class="you-will-get pt-2">YOU’LL GET </span> <span class="ogaranya-fee">OGARANYA FEES (3%)</span></div>
+          <div class="ogaranya-bottom-fee-price"><span class="ogaranya-fee-price">NGN 60.00</span> <span class="you-will-get-price">NGN 1,940.00</span></div>
+          <div class="price-margin-top"><span class="text-in-price">Free, automatic settlement same day</span>
+            <div class="border-for-price"> </div>
+          </div>
+          <div class="price-margin-top"><span class="text-in-price">Local fees capped at NGN 2,000</span>
+            <div class="border-for-price"> </div>
+          </div>
+          <div class="price-margin-top"><span class="text-in-price">Volume discounts available</span>
+            <div class="border-for-price"> </div>
+          </div>
+          <div class="price-margin-top"><span class="text-in-price">No hidden fees or charges</span>
+            <div class="border-for-price"> </div>
+          </div>
+          <div class="price-margin-top"><span class="text-in-price">Zero integration fee</span>
+            <div class="border-for-price"> </div>
+          </div>
+          <div class="price-margin-top"><span class="text-in-price">Zero maintenance fee</span></div>
+        </div>
+        <div class="col-lg-1"> </div>
+      </div>
+    </div>
+    <div class="col-lg-2"> </div>
+  </div>
+</div>

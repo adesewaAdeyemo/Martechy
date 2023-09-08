@@ -57,13 +57,13 @@ export default {
   left: 0;
   height: 100vh;
   width: 100%;
-  background-color: rgba(195, 198, 206, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
 }
 
 dialog {
   position: fixed;
-  top: 10vh;
+  top: 20vh;
   left: 10%;
   width: 80%;
   z-index: 100;
@@ -76,12 +76,12 @@ dialog {
   background-color: white;
 }
 
-/* header {
-  background-color: #4b74e2;
+header {
+  background-color: #3a0061;
   color: white;
   width: 100%;
   padding: 1rem;
-} */
+}
 
 header h2 {
   margin: 0;
