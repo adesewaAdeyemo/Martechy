@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="wrapper">
     <base-card>
       <h2>Page not found</h2>
       <p>

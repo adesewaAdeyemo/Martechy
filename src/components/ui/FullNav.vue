@@ -76,7 +76,7 @@ export default {
   }
   };
 </script>
-<style>
+<style scoped>
 /* .google_te_gadget_simple ul li{
     list-style: none;
     text-decoration: none;

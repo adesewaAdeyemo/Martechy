@@ -1,11 +1,12 @@
 <template>
-  <div>    
+  <div class="scrollable">
+  <div class="table">    
     <div class="row table-row table-header">
         <div class="col" v-for="(column, index) in columns" :key="index">
         <div class="header-cell">{{ column.label }}</div>
         </div>
     </div>
-
+    <div class="scroll-y">
     <div v-for="(row, rowIndex) in paginatedRows" :key="rowIndex" class="row table-row">
       <div class="col" v-for="(column, colIndex) in columns" :key="colIndex">
         <div class="data-cell">
@@ -19,18 +20,23 @@
           </div>
       </div>
     </div>
+    </div>
+  </div>
+  </div>
     <div class="d-flex justify-content-between">
         <div class="">
             <i class="bi bi-database-fill"></i>    <span class="bg-light">Available goods</span>
         </div>
         <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1" class="bg-light"><i class="bi bi-chevron-left"></i></button>
+            <button @click="prevPage" :disabled="currentPage === 1" class="bg-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg></button>
             <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages" class="bg-light"><i class="bi bi-chevron-right"></i></button>
+            <button @click="nextPage" :disabled="currentPage === totalPages" class="bg-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg></button>
         </div>
     </div>
-
-  </div>
 </template>
 
 <script>
@@ -50,7 +56,7 @@ export default {
         },
         {
           label: 'Category',
-          field: 'Category',
+          field: 'category',
         },
         {
           label: 'Name',
@@ -119,7 +125,7 @@ export default {
   text-align: center;
   padding: 10px;
 }
-.table-header{
+.table-header, .header-cell{
     background-color: #4b74e2 !important;
     color: #fff;
 }
@@ -159,4 +165,17 @@ span{
 .drop{
     text-align: right;
 }
+/* @media screen and (max-width: 1400px) { */
+  .table{
+    min-width: 1400px;
+  }
+  .scrollable{
+    width: 100% !important;
+    overflow-x: scroll !important;
+  }
+  .scroll-y{
+    overflow-y: scroll !important;
+    height: 600px;
+  }
+/* } */
 </style>

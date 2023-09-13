@@ -76,6 +76,8 @@ html {
 
 body {
   margin: 0;
+  /* max-width: 100% !important; */
+  /* overflow-x: hidden; */
 }
 
 </style>

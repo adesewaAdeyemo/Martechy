@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     async getData() {
-
         let response = axios.get('http://ec2-34-238-127-13.compute-1.amazonaws.com:8080/api/v1/stores/MPLOQ/products', {
         params: {
             offset: 0,
